@@ -179,6 +179,29 @@ public class Maze3d {
 			return arr;
 		}
 	}
+	
+	
+
+	public int getValue(int x,int y,int z){
+		p.setX(x);
+		p.setY(y);
+		p.setZ(z);
+		return maze[p.getX()][p.getY()][p.getZ()];
+		
+		
+	}
+	//set 1/0 in specific position
+	public void setValue(int x,int y,int z,int val){
+		p.setX(x);
+		p.setY(y);
+		p.setZ(z);
+		maze[p.getX()][p.getY()][p.getZ()]=val;
+	}
+	
+	
+	
+	
+	
 
 	public int[][] getCrossSectionByY(int n) throws IndexOutOfBoundsException{
 		if((n<0)||(n>=maze[0].length))
@@ -192,6 +215,7 @@ public class Maze3d {
 			return arr;
 		}
 	}
+	
 
 	public int[][] getCrossSectionByZ(int n) throws IndexOutOfBoundsException{
 		if((n<0)||(n>=maze[0][0].length))
@@ -461,10 +485,12 @@ public class Maze3d {
 	}
 
 
-
-
-
-
+	//create space in cell
+	public boolean haveSpace(int x, int y, int z){
+		if(x >= 0 && x < this.getP().getX() && y >= 0 && y < this.getP().getY() && z >= 0 && z < this.getP().getZ())
+			return maze[x][y][z] == 0;
+		return false;
+	}
 
 
 

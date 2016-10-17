@@ -2,8 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry kind="lib" path="C:/Users/ShayMalca/Desktop/projectMaze3d/CLI.jar"/>
-	<classpathentry kind="lib" path="C:/Users/ShayMalca/Desktop/projectMaze3d/my algorithms3.jar"/>
-	<classpathentry kind="lib" path="C:/Users/ShayMalca/Desktop/swt.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ShayMalca/Desktop/proj25.9.16/my algorithms10.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ShayMalca/Desktop/swt_Windows64.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

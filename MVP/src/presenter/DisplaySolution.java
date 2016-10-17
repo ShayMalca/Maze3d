@@ -1,7 +1,5 @@
 package presenter;
 
-import algorithms.mazeGenerators.Position;
-
 public class DisplaySolution extends AbstractCommand {
 
 	public DisplaySolution(Presenter presenter) {
@@ -12,16 +10,16 @@ public class DisplaySolution extends AbstractCommand {
 	@Override
 	public void doCommand(String command) {
 		String[] temp = command.split(" ");
-		if (temp.length > 4) {
-			presenter.getUi().V_displayMessage("wrong input");
+		if (temp.length != 2) {
+			presenter.getView().V_displayMessage("wrong input");
 		} else {
-			String mazeName = temp[0];
-			//how to cast?
-			presenter.getUi().V_printdisplaySolution(presenter.getModel().getMazeSolution(mazeName));
-		
-		
+			String mazeName = temp[1];
+			//presenter.getView().V_printdisplaySolution(presenter.getModel().getMazeSolution(mazeName));
+
+
 		}
 
 	}
+
 
 }

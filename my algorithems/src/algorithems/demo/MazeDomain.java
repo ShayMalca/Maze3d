@@ -11,10 +11,13 @@ import algorithms.search.State;
 public class MazeDomain extends CommonSearchable<Position> {
 
 	Maze3d maze;
-
+	private State<Position> startPositon;
+	private State<Position> goalPosition;
 	public MazeDomain(Maze3d maze) {
 		super();
 		this.maze=maze;
+		this.startPositon = new State<Position>(maze.getStartPosition());
+		this.goalPosition = new State<Position>(maze.getGoalPosition());
 	}
 
 
@@ -34,6 +37,13 @@ public class MazeDomain extends CommonSearchable<Position> {
 		goal.setCost(1);
 		return goal;
 	}
+	
+	
+
+	public void setStartState(State<Position> startPositon) {
+		this.startPositon = startPositon;
+	}
+	
 
 
 	@Override

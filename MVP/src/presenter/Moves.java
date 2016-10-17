@@ -29,15 +29,10 @@ public class Moves extends AbstractCommand {
 			presenter.getModel().moveBackward();
 			break;
 		default: 
-			presenter.getUi().V_displayMessage("move does not exist!");
+			presenter.getView().V_displayMessage("move does not exist!");
 			break;
 		}
+
 	}
-
-
-		
-		
-
-	
 
 }

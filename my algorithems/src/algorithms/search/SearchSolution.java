@@ -40,6 +40,7 @@ public class SearchSolution<T> extends Solution implements Serializable {
 	 */
 	public void setSolution(ArrayList<T> solution) {
 		this.solution = solution;
+		
 	}
 	
 	

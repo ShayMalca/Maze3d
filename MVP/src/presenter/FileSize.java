@@ -11,11 +11,14 @@ public class FileSize extends AbstractCommand {
 	public void doCommand(String command) {
 		String[] tempArr = command.split(" ");
 		if (tempArr.length > 50){
-			presenter.getUi().V_displayMessage("Invalid input");
+			presenter.getView().V_displayMessage("Invalid input");
 		} else{
 			String name = tempArr[0];
 			presenter.getModel().fileSize(name);
 			
 		}
 	}
-}
+
+	}
+
+

@@ -10,7 +10,7 @@ public class Exit extends AbstractCommand {
 	@Override
 	public void doCommand(String command) {
 		presenter.getModel().exit();
-		presenter.getUi().exit();
+		presenter.getView().exit();
 
 	}
 

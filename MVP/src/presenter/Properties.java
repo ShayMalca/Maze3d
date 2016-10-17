@@ -2,6 +2,11 @@ package presenter;
 
 import java.io.Serializable;
 
+import algorithms.mazeGenerators.GrowingTreeGenerator;
+import algorithms.mazeGenerators.Maze3d;
+import algorithms.mazeGenerators.Position;
+import algorithms.mazeGenerators.StackPop;
+
 public class Properties implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -12,6 +17,7 @@ public class Properties implements Serializable {
 	private String mazeName;
 	private String chooseView;
 	private char axis;
+	private Maze3d maze;
 	
 	/**
 	 * C'tor
@@ -23,16 +29,21 @@ public class Properties implements Serializable {
 	 * this function define default properties
 	 */
 	public void defaultProperties(){
-		this.x = 3;
-		this.y = 3;
-		this.z = 3;
-		this.numOfThreads = 5;
+		this.x = 4;
+		this.y = 4;
+		this.z = 4;
+		this.numOfThreads =10;
 		this.algo = "BFS";
-		this.typeOfMaze = "GrowingTreeGeneraor";
+		this.typeOfMaze = "GrowingTreeGenerator";
 		this.mazeName = "DefaultMaze";
 		this.chooseView="Gui";
 		this.axis='x';
+		
 	}
+	
+	/**
+	 * setters & getters
+	 */
 	public int getX() {
 		return x;
 	}
@@ -90,9 +101,11 @@ public class Properties implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	
-	
-	
-	
+	public Maze3d getMaze() {
+		return maze;
+	}
+	public void setMaze(Maze3d maze) {
+		this.maze = maze;
+	}
 
 }

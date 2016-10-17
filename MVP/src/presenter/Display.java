@@ -1,7 +1,5 @@
 package presenter;
 
-import algorithms.mazeGenerators.Maze3d;
-
 public class Display extends AbstractCommand {
 
 	public Display(Presenter presenter) {
@@ -11,22 +9,15 @@ public class Display extends AbstractCommand {
 
 	@Override
 	public void doCommand(String command) {
-		String [] temp=command.split(" ");
+	String [] temp=command.split(" ");
 		
-		if (temp.length >2) {
-			presenter.getUi().V_displayMessage("wrong input");
+		if (temp.length > 2) {
+			this.presenter.getView().V_displayMessage("wrong input\n");
 		} else {
 			String mazeName = temp[0];
-			
 			presenter.getModel().display(mazeName);
-			
-		
 		}
 
 	}
 
-
-
-	}
-
-
+}

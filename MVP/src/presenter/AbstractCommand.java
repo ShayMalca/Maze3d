@@ -7,7 +7,8 @@ public abstract class AbstractCommand implements Command {
 		super();
 		this.presenter = presenter;
 	}
-
+	
+	@Override
 	public abstract void doCommand(String command);
 
 	public Presenter getPresenter() {

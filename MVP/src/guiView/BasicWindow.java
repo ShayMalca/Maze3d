@@ -1,17 +1,17 @@
-package GuiView;
+package guiView;
+
+import java.util.Observable;
 
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-
-
-public abstract class BasicWindow implements Runnable {
-	Display display;
+public abstract class BasicWindow extends Observable implements Runnable {
+	protected Display display;
 	protected Shell shell;
 
 	public BasicWindow(String title, int width,int height) {
 		display=new Display();
-		shell = new Shell(display);
+		shell  = new Shell(display);
 		shell.setSize(width,height);
 		shell.setText(title);
 	}
@@ -38,6 +38,22 @@ public abstract class BasicWindow implements Runnable {
 		display.dispose(); // dispose OS components
 
 
+	}
+
+	public Display getDisplay() {
+		return display;
+	}
+
+	public void setDisplay(Display display) {
+		this.display = display;
+	}
+
+	public Shell getShell() {
+		return shell;
+	}
+
+	public void setShell(Shell shell) {
+		this.shell = shell;
 	} 
 
 

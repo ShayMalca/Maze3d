@@ -1,8 +1,8 @@
 package presenter;
 
-public class Generate extends AbstractCommand {
+public class Generate3dMaze extends AbstractCommand {
 
-	public Generate(Presenter presenter) {
+	public Generate3dMaze(Presenter presenter) {
 		super(presenter);
 		// TODO Auto-generated constructor stub
 	}

@@ -9,176 +9,177 @@ import model.Model;
 import view.View;
 
 
-
-
-
 public class Presenter implements Observer {
+	
+	private View view;
+	private Model model;
+	private HashMap<String, Command> hashStringCommand;
+	private Properties properties;
 
-private View ui;	
-private Model model;
-private HashMap<String, Command> hash;
-private Properties properties;
-
-public Presenter(View view, Model model){
-	this.ui = view;
-	this.model = model;
-	this.properties = new Properties();
-	properties.defaultProperties();
-	model.setProperties(properties);
+	public Presenter(View view, Model model) {
+		this.view = view;
+		this.model = model;
+		this.properties = new Properties();
+		properties.defaultProperties();
+		model.setProperties(properties);
+		
+		hashStringCommand = new HashMap<String, Command>();
+		
+		hashStringCommand.put("dir", new Dir(this));
+		hashStringCommand.put("generate", new Generate3dMaze(this));
+		hashStringCommand.put("display", new Display(this));
+		hashStringCommand.put("displayCrossSectionBy", new DisplayCrossSectionByXYZ(this));
+		hashStringCommand.put("displaySolution", new DisplaySolution(this));
+		hashStringCommand.put("save", new SaveMaze(this));
+		hashStringCommand.put("load", new LoadMaze(this));
+		hashStringCommand.put("maze", new MazeSize(this));
+		hashStringCommand.put("file", new FileSize(this));
+		hashStringCommand.put("solve", new Solve(this));
+		hashStringCommand.put("move", new Moves(this));
+		hashStringCommand.put("exit", new Exit(this));
+		
+		view.V_setCommands(hashStringCommand);
+	}
 	
-	hash = new HashMap<String, Command>();
-	
-	hash.put("dir", new Dir(this));
-	hash.put("generate", new Generate(this));
-	hash.put("displayCrossSectionBy", new DisplayCrossSectionByXYZ(this));
-	hash.put("displaySolution", new DisplaySolution(this));
-	hash.put("display", new Display(this));
-	hash.put("save", new Save(this));
-	hash.put("load", new Load(this));
-	hash.put("maze", new MazeSize(this));
-	hash.put("file", new FileSize(this));
-	hash.put("solve", new Solve(this));
-	hash.put("move", new Moves(this));
-	hash.put("exit", new Exit(this));
-	
-	ui.V_setCommands(hash);
-	
-}
-
-@Override
-	public void update(Observable o, Object arg) {
-	if (o == ui) {
-		// if the object is properties
-		if (((arg.getClass()).getName()).equals("presenter.Properties")) {
-			Properties prop = (Properties) arg;
-			model.setProperties(prop);
-		} else { // if it is a command
-			Command command;
-			String userCommand = (String) arg;
-			command = hash.get(userCommand.split(" ")[0]);
-			if (command != null) {
-				if (userCommand.split(" ").length > 0) {
-					command.doCommand(userCommand.substring(userCommand.indexOf(' ')+1));
-				} else {
-					command.doCommand("");
-				}
+	@Override
+	public void update(Observable observable, Object object) {
+		if (observable == view) {
+			// if the object is properties
+			if (((object.getClass()).getName()).equals("presenter.Properties")) {
+				Properties prop = (Properties) object;
+				model.setProperties(prop);
+			} else { // if it is a command
+				Command command;
+				String userCommand = (String) object;
+				command = hashStringCommand.get(userCommand.split(" ")[0]);
+				if (command != null) {
+					if (userCommand.split(" ").length > 0) {
+						command.doCommand(userCommand.substring(userCommand.indexOf(' ') + 1));
+					} else {
+						command.doCommand("");
+					}
 			} else {
-				ui.V_displayMessage("Invalid Input");
+					view.V_displayMessage("Invalid Input");
+				}
+			}
+		} else if (observable == model) {
+			String line = (String) object;
+			String[] stringArray = line.split(" ");
+			switch (stringArray[0]) {
+			case "mazeIsReady":
+				Maze3d maze = (Maze3d) model.getUserCommand(line);
+				view.V_printAllMaze(maze);
+			//	view.V_displayPosition(maze.getStartPosition());		
+				break;
+			case "displayCrossSectionBy":
+				view.V_displayCrossSectionBy((int[][]) model.getUserCommand(line));
+				break;
+			case "saveMaze":
+				view.V_displayMessage("Maze save succsesfully in file " + (String) model.getUserCommand(line));
+				break;
+			case "display":
+				Maze3d maze1= (Maze3d) model.getUserCommand(line);
+				view.V_printAllMaze(maze1);
+				view.V_displayPosition(maze1.getStartPosition());
+			case "loadMaze":
+				Maze3d maze3d = (Maze3d) model.getUserCommand(line);
+				view.V_printAllMaze(maze3d);
+			
+				break;
+			case "mazeSize":
+				view.V_displayMessage("Maze size in the memory is: " + (int) model.getUserCommand(line));
+				break;
+			case "fileSize":
+				view.V_displayMessage("File size is: " + (int) model.getUserCommand(line));
+				break;
+			case "solutionIsReady":
+				view.V_printdisplaySolution(model.getMazeSolution((String) model.getUserCommand(line)));
+				
+				break;
+			case "saveZip":
+				view.V_displayMessage("Maze file is saved to: " + (String) model.getUserCommand(line));
+				break;
+			case "loadZip":
+				view.V_displayMessage("Maze file is loaded from: " + (String) model.getUserCommand(line));
+				break;
+			case "move":
+				view.V_printAllMaze(model.getMaze3d((String) model.getUserCommand(line)));
+			//	view.V_displayPosition(model.getPositionFromHash((String) model.getUserCommand(line)));
+				break;
+			case "exit":
+				view.V_displayMessage("the program is shutting dowm, bye bye!\n");
+				break;
+			case "null":
+				view.V_displayMessage("Maze " + (String) model.getUserCommand(line) + " is not exist");
+				break;
+			case "Invalid":
+				switch (stringArray[1]) {
+				case "parameters":
+					view.V_displayMessage("Invalid parameters\n");
+					break;
+				case "index":
+					view.V_displayMessage("Invalid index\n");
+					break;
+				case "file":
+					view.V_displayMessage("The file " + (String) model.getUserCommand(line) + "is not exist");
+					break;
+				case "compress":
+					view.V_displayMessage("Compressor " + (String) model.getUserCommand(line) + "is faild");
+					break;
+				case "maze":
+					view.V_displayMessage("Error with " + (String) model.getUserCommand(line) + "maze");
+					break;
+				case "algorithm":
+					view.V_displayMessage("Invalid algorithm\n");
+					break;
+				case "solution":
+					view.V_displayMessage("Solution for: " + (String) model.getUserCommand(line) + "is not exist");
+					break;
+
+				default:
+					view.V_displayMessage("Invalid command");
+					break;
+				}				
 			}
 		}
-	} else if (o == model) {
-		String line = (String) arg;
-		String[] stringArray = line.split(" ");
-		switch (stringArray[0]) {
-		case "mazeIsReady":
-			Maze3d maze = (Maze3d) model.getUserCommand(line);
-			ui.V_printAllMaze(maze);
-			ui.displayPosition(maze.getStartPosition());
-			break;
-		case "displayCrossSectionBy":
-			ui.V_displayCrossSectionBy((int[][]) model.getUserCommand(line));
-			break;
-		case "display":
-			Maze3d maze1= (Maze3d) model.getUserCommand(line);
-			ui.V_printAllMaze(maze1);
-			ui.displayPosition(maze1.getStartPosition());
-			break;
-		case "saveMaze":
-			ui.V_displayMessage("Maze save succsesfully in file" + (String) model.getUserCommand(line));
-			break;
-		case "loadMaze":
-			Maze3d maze3d = (Maze3d) model.getUserCommand(line);
-			ui.V_printAllMaze(maze3d);
-			ui.displayPosition(maze3d.getStartPosition());
-			break;
-		case "mazeSize":
-			ui.V_displayMessage("Maze size in the memory is: " + (int) model.getUserCommand(line));
-			break;
-		case "fileSize":
-			ui.V_displayMessage("File size is: " + (int) model.getUserCommand(line));
-			break;
-		case "solutionIsReady":
-			ui.V_printdisplaySolution(model.getMazeSolution((String) model.getUserCommand(line)));
-			break;
-		case "saveZip":
-			ui.V_displayMessage("Maze file is saved to: " + (String) model.getUserCommand(line));
-			break;
-		case "loadZip":
-			ui.V_displayMessage("Maze file is loaded from: " + (String) model.getUserCommand(line));
-			break;
-		case "move":
-			ui.V_printAllMaze(model.getMaze3d((String) model.getUserCommand(line)));
-			ui.displayPosition(model.getPositionFromHash((String) model.getUserCommand(line)));
-			break;
-		case "exit":
-			ui.V_displayMessage("the program is shutting dowm, bye bye!");
-			break;
-		case "null":
-			ui.V_displayMessage("Maze " + (String) model.getUserCommand(line) + " is not exist");
-			break;
-		case "Invalid":
-			switch (stringArray[1]) {
-			case "parameters":
-				ui.V_displayMessage("Invalid parameters");
-				break;
-			case "index":
-				ui.V_displayMessage("Invalid index");
-				break;
-			case "file":
-				ui.V_displayMessage("The file" + (String) model.getUserCommand(line) + "is not exist");
-				break;
-			case "compress":
-				ui.V_displayMessage("Compressor" + (String) model.getUserCommand(line) + "is faild");
-				break;
-			case "maze":
-				ui.V_displayMessage("Error with" + (String) model.getUserCommand(line) + "maze");
-				break;
-			case "algorithm":
-				ui.V_displayMessage("Invalid algorithm");
-				break;
-			case "solution":
-				ui.V_displayMessage("Solution for:" + (String) model.getUserCommand(line) + "is not exist");
-				break;
 
-			default:
-				ui.V_displayMessage("Invalid command");
-				break;
-			}				
-		}
 	}
-}
-	public View getUi() {
-		return ui;
+
+	public View getView() {
+		return view;
 	}
-	public void setUi(View ui) {
-		this.ui = ui;
+
+	public void setView(View view) {
+		this.view = view;
 	}
+
 	public Model getModel() {
 		return model;
 	}
+
 	public void setModel(Model model) {
 		this.model = model;
 	}
+
 	public HashMap<String, Command> getHash() {
-		return hash;
-	}
-	public void setHash(HashMap<String, Command> hash) {
-		this.hash = hash;
+		return hashStringCommand;
 	}
 
+	public void setHash(HashMap<String, Command> hashStringCommand) {
+		this.hashStringCommand = hashStringCommand;
+	}
 
+	public HashMap<String, Command> getHashStringCommand() {
+		return hashStringCommand;
+	}
 
-
-
+	public void setHashStringCommand(HashMap<String, Command> hashStringCommand) {
+		this.hashStringCommand = hashStringCommand;
+	}
 
 	public Properties getProperties() {
 		return properties;
 	}
-
-
-
-
-
 
 	public void setProperties(Properties properties) {
 		this.properties = properties;

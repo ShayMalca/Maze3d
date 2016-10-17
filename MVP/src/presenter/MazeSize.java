@@ -11,10 +11,11 @@ public class MazeSize extends AbstractCommand {
 	public void doCommand(String command) {
 		String[] tempArr = command.split(" ");
 		if (tempArr.length> 3) {
-			presenter.getUi().V_displayMessage("Invalid parameters");
+			presenter.getView().V_displayMessage("Invalid parameters");
 		} else {
 			String mazeName = tempArr[0];
 			presenter.getModel().mazeSize(mazeName);
 		}
 	}
+
 }

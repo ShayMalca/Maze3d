@@ -10,21 +10,23 @@ public class DisplayCrossSectionByXYZ extends AbstractCommand {
 	@Override
 	public void doCommand(String command) {
 		String[] tempArr = command.split(" ");
-		//String mazeName;
+		String mazeName;
 		int index=0;
 		try{
-			index=Integer.parseInt(tempArr[0]);
-			String xyz = tempArr[1];
-			//mazeName = tempArr[3];
-			presenter.getModel().getCrossSectionBy(xyz, index);
+			index=Integer.parseInt(tempArr[1]);
+			String xyz = tempArr[0];
+			mazeName = tempArr[2];
+			presenter.getModel().getCrossSectionBy(mazeName, xyz, index);
 		}catch (NumberFormatException e){
-			presenter.getUi().V_displayMessage("eror");
+			presenter.getView().V_displayMessage("eror");
 		}
 
 
 	}
 
 
-
+	
 
 }
+
+
