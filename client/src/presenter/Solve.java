@@ -1,0 +1,30 @@
+package presenter;
+
+/**
+ * The Class Solve.
+ */
+public class Solve extends AbstractCommand {
+
+	/**
+	 * Instantiates a new solve.
+	 *
+	 * @param presenter the presenter
+	 */
+	public Solve(Presenter presenter) {
+		super(presenter);
+		// TODO Auto-generated constructor stub
+	}
+
+
+	@Override
+	public void doCommand(String command) {
+		String[] tempArr = command.split(" ");
+		if (tempArr.length >4){
+			presenter.getView().V_displayMessage("Invalid Input");
+	}else{
+		String name = tempArr[0];
+		presenter.getModel().solveMaze(name);
+		}
+	}
+
+}
